@@ -8,7 +8,7 @@ See LICENSE for this software's licensing terms.
 
 PickAndChoose is a jQuery plugin which allows you make selections from a list of displayed items.  There are two boxes:  one box contains a list of available options and the other displays the items you've selected.  You select and deselect options by using buttons that sit between the two boxes.  When you select an option, it moves from the 'available' box to the 'selected' box.  When you deselect an option, the opposite happens.  You can also select and deselect all options at once.
 
-Setup is incredibly simple:  invoke the plugin on an empty <div> and pass in the values for the selection boxes in JSON format.  The plugin takes care of the rest.
+Setup is incredibly simple:  invoke the plugin on an empty &lt;div&gt; and pass in the values for the selection boxes in JSON format.  The plugin takes care of the rest.
 
 
 ## Features
@@ -20,7 +20,7 @@ Setup is incredibly simple:  invoke the plugin on an empty <div> and pass in the
 
 ## Using
 
-Invoke the plugin on an empty <div> and pass properties as you prefer.  The only required properties are `unselectedItems` and `selectedItems`.  If you have more than one PickAndChoose widget in your page, you must then specify `unselectedId` and `selectedItems`.
+Invoke the plugin on an empty &lt;div&gt; and pass properties as you prefer.  The only required properties are `unselectedItems` and `selectedItems`.  If you have more than one PickAndChoose widget in your page, you must then specify `unselectedId` and `selectedItems`.
 
 | Property | Description | Default Value |
 | ----------------- | --------------------------------------------------------------------------------------------------------------------------- |---------------|
