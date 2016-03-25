@@ -53,8 +53,10 @@
             } );
 
             $( "#widget2" ).pickAndChoose( {
-               selectedId   : "widget2Selected",
-               unselectedId : "widget2Unselected",
+               selectedId     : "widget2Selected",
+               selectedName   : "widget2Selected",
+               unselectedId   : "widget2Unselected",
+               unselectedName : "widget2Unselected",
 
                buttonSelectText       : "Select",
                buttonSelectAllText    : "Select All",
@@ -109,7 +111,7 @@
       <h2>Successful initialization</h2>
       <div id="widget1"></div>
 
-      <h2>Overriding default configuration:  ensuring uniqueness of &lt;select&gt; IDs &amp; changing button properties</h2>
+      <h2>Overriding default configuration:  ensuring uniqueness of &lt;select&gt; identifiers &amp; changing button properties</h2>
       <h4>See the documentation or plugin code for a complete list of customization options.</h4>
       <div id="widget2"></div>
 

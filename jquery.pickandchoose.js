@@ -49,10 +49,16 @@
          buttonDeselectAllText : "<<",
 
          // The ID of the <select> containing the unselected items
-         unselectedId : "unselected",
+         unselectedId : "pacUnselectedItems",
+
+         // The name of the <select> containing the unselected items
+         unselectedName : "pacUnselectedItems",
 
          // The ID of the <select> containing the selected items
-         selectedId : "selected",
+         selectedId : "pacSelectedItems",
+
+         // The name of the <select> containing the selected items
+         selectedName : "pacSelectedItems",
 
          // JSON of items to populate the unselected items' <select> with
          unselectedItems : null,
@@ -105,7 +111,7 @@
          var buttonContainer = $( "<div/>", {
             class : settings.buttonContainerClass
          } );
-         
+
          var selectedContainer = $( "<div/>", {
             class : settings.selectedContainerClass,
          } );
@@ -114,6 +120,7 @@
 
          var unselectedSelect = $( "<select/>", {
             id : settings.unselectedId,
+            name : settings.unselectedName,
             multiple : ""
          } );
 
@@ -151,19 +158,19 @@
 
          if( typeof settings.onChangeCallback === "function" ) {
             btnSelect.on( "click", function() {
-               settings.onSelectCallback();
+               settings.onChangeCallback();
             } );
 
             btnSelectAll.on( "click", function() {
-               settings.onSelectCallback();
+               settings.onChangeCallback();
             } );
 
             btnDeselect.on( "click", function() {
-               settings.onDeselectCallback();
+               settings.onChangeCallback();
             } );
 
             btnDeselectAll.on( "click", function() {
-               settings.onDeselectCallback();
+               settings.onChangeCallback();
             } );
          };
 
@@ -175,8 +182,9 @@
          // create selected container content
 
          var selectedSelect = $( "<select/>", {
-            multiple : "",
-            id : settings.selectedId
+            id : settings.selectedId,
+            name : settings.selectedName,
+            multiple : ""
          } );
 
          if( settings.selectedItems != null ) {
