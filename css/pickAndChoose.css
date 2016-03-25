@@ -1,0 +1,53 @@
+/*
+ * PickAndChoose v1.0
+ * https://www.github.com/kloverde/jquery-PickAndChoose
+ *
+ *  This software is licensed under the 3-clause BSD license.
+ *
+ * Copyright (c) 2016 Kurtis LoVerde
+ * All rights reserved
+ */
+
+
+/* containers */
+
+.pacContainer {
+   display: table;
+   vertical-align: middle;
+}
+
+.pacContainer .msUnselectedContainer {
+   display: table-cell;
+   vertical-align:middle;
+}
+
+.pacContainer .pacButtonContainer {
+   display: table-cell;
+   vertical-align: middle;
+   padding-left: 25px;
+   padding-right: 25px;
+}
+
+.pacContainer .msSelectedContainer {
+   display: table-cell;
+   vertical-align:middle;
+}
+
+/* container content */
+
+.pacContainer select {
+   width: 200px;
+   height: 300px;
+}
+
+.pacContainer .pacButtonContainer button.pacButtonSelect,
+.pacContainer .pacButtonContainer button.pacButtonSelectAll,
+.pacContainer .pacButtonContainer button.pacButtonDeselect,
+.pacContainer .pacButtonContainer button.pacButtonDeselectAll{
+   display: block;
+   width: 45px;
+}
+
+.pacContainer .pacButtonContainer button.pacButtonDeselect {
+   margin-top: 25px;
+}
