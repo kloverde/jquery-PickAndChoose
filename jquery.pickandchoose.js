@@ -48,10 +48,10 @@
          // The text of the deselect-all button
          buttonDeselectAllText : "<<",
 
-         // The ID of the <select> containing the unselected options
+         // The ID of the <select> containing the unselected items
          unselectedId : "unselected",
 
-         // The ID of the <select> containing the selected options
+         // The ID of the <select> containing the selected items
          selectedId : "selected",
 
          // JSON of items to populate the unselected items' <select> with

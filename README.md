@@ -6,7 +6,7 @@ PickAndChoose
 
 See LICENSE for this software's licensing terms.
 
-PickAndChoose is a jQuery plugin which allows you make selections from a list of displayed items.  There are two boxes:  one box contains a list of available options and the other displays the items you've selected.  You select and deselect options by using buttons that sit between the two boxes.  When you select an option, it moves from the 'available' box to the 'selected' box.  When you deselect an option, the opposite happens.  You can also select and deselect all options at once.
+PickAndChoose is a jQuery plugin which allows you make selections from a list of displayed items.  There are two boxes:  one box contains a list of available items and the other displays the items you've selected.  You select and deselect items by using buttons that sit between the two boxes.  When you select an item, it moves from the 'available' box to the 'selected' box.  When you deselect an item, the opposite happens.  You can also select and deselect all items at once.
 
 Setup is incredibly simple:  invoke the plugin on an empty &lt;div&gt; and pass in the values for the selection boxes in JSON format.  The plugin takes care of the rest.
 
@@ -36,8 +36,8 @@ Invoke the plugin on an empty &lt;div&gt; and pass properties as you prefer.  Th
 | `buttonSelectAllText` | The text of the select-all button | &gt;&gt; |
 | `buttonDeselectText` | The text of the deselect button |  &lt; |
 | `buttonDeselectAllText` | The text of the deselect-all button | &lt;&lt; |
-| `unselectedId` | The ID of the &lt;select&gt; containing the unselected options | unselected |
-| `selectedId` | The ID of the &lt;select&gt; containing the selected options | selected |
+| `unselectedId` | The ID of the &lt;select&gt; containing the unselected items | unselected |
+| `selectedId` | The ID of the &lt;select&gt; containing the selected items | selected |
 | `unselectedItems` | JSON of unselected items to populate the unselected items' &lt;select&gt; with | null |
 | `selectedItems` | JSON of items to populate the selected items' &lt;select&gt; with | null |
 | `onChangeCallback | A callback function to execute when the user uses the buttons | null |
