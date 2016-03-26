@@ -49,7 +49,7 @@ Invoke the plugin on an empty &lt;div&gt; and pass properties as you prefer.  Th
 The callback receives three parameters:
 
 | Parameter | Data Type | Description |
-| ----------------- | --------------------------------------------------------------------------------------------------------- |
+| ----------- | --------|-------------------------------------------------------------------------------------------------- |
 | `operation` | string | Tells you whether the user selected or deselected items.  Possible values are `select` and `deselect`. |
 | `recipient` | jQuery object | Tells you which &lt;select&gt; received the items that were selected/deselected |
 | `items`     | object array | Contains the data that was written to the recipient &lt;select&gt;.  Access the data using [object].key and [object].value. |
