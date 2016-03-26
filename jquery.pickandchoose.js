@@ -90,7 +90,7 @@
          $.each( settings.unselectedItems, function(prevKey, prevValue) {
             $.each( settings.selectedItems, function(key, value) {
                if( prevKey === key ) {
-                  var errMsg = "MultipleSelect initialization error for "
+                  var errMsg = "PickAndChoose initialization error for "
                              + $( container ).attr( "id" )
                              + ":  key '" + prevKey
                              + "' appears in both unselected and selected items"
