@@ -141,6 +141,12 @@
             }
 
             $( "#widget4" ).append( "<p>This line was successfully written via script due to catching the exception</p>" );
+
+            $( "#widget5" ).pickAndChoose( {
+               createSelectElements : false,
+               unselectedId         : "select1",
+               selectedId           : "select2"
+            } );
          } );
       </script>
    </head>
@@ -172,6 +178,19 @@
             invocation in a try/catch.
          </h4>
          <div id="widget4"></div>
+
+         <h2>Using with preexisting &lt;select&gt; elements</h2>
+         <div id="widget5">
+            <select id="select1" name="select1">
+               <option value="choice1">Choice 1</option>
+               <option value="choice1">Choice 2</option>
+               <option value="choice1">Choice 3</option>
+               <option value="choice1">Choice 4</option>
+            </select>
+
+            <select id="select2" name="select2">
+            </select>
+         </div>
       </form>
 
       <h2>Donations</h2>

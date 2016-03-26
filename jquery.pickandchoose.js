@@ -16,6 +16,10 @@
    $.fn.pickAndChoose = function( options ) {
 
       var settings = $.extend( {
+         // If true, PickAndChoose will apply CSS classes defined here to HTML elements.  If
+         // false, no CSS classes will be added, even if you override their default values.
+         addCssClasses : true,
+
          // The class name of the <div> which contains everything
          containerClass : "pacContainer",
 
@@ -52,22 +56,44 @@
          // The text of the deselect-all button
          buttonDeselectAllText : "<<",
 
-         // The ID of the <select> containing the unselected items
+         // If true, <select> elements will be created based on the data you provide
+         // in the unselectedItems and selectedItems properties, and they wil be
+         // named according to the unselectedId, unselectedName, selectedId, and
+         // selectedName properties.
+         //
+         // If false, PickAndChoose will use the unselectedId and selectedId
+         // properties to locate the <select>s in the page.  The unselectedName
+         // and selectedName properties play no role here.
+         createSelectElements : true,
+
+         // The ID of the <select> containing the unselected items.  If you provide
+         // PickAndChoose with your own <select> elements instead of having it
+         // construct them for you, this setting is ignored.
          unselectedId : "pacUnselectedItems",
 
-         // The name of the <select> containing the unselected items
+         // The name of the <select> containing the unselected items.  If you provide
+         // PickAndChoose with your own <select> elements instead of having it
+         // construct them for you, this setting is ignored.
          unselectedName : "pacUnselectedItems",
 
-         // The ID of the <select> containing the selected items
+         // The ID of the <select> containing the selected items.  If you provide
+         // PickAndChoose with your own <select> elements instead of having it
+         // construct them for you, this setting is ignored.
          selectedId : "pacSelectedItems",
 
-         // The name of the <select> containing the selected items
+         // The name of the <select> containing the selected items.  If you provide
+         // PickAndChoose with your own <select> elements instead of having it
+         // construct them for you, this setting is ignored.
          selectedName : "pacSelectedItems",
 
-         // Key/value pairs of items to populate the unselected items' <select> with
+         // Key/value pairs of items to populate the unselected items' <select> with.
+         // If you provide PickAndChoose with your own <select> elements instead of
+         // having it construct them for you, this setting is ignored.
          unselectedItems : null,
 
-         // Key/value pairs of items to populate the selected items' <select> with
+         // Key/value pairs of items to populate the selected items' <select> with.
+         // If you provide PickAndChoose with your own <select> elements instead of
+         // having it construct them for you, this setting is ignored.
          selectedItems : null,
 
          // A callback function to execute when the user uses the buttons.  The
@@ -84,102 +110,133 @@
       var SWAP_TYPE_SELECT   = "select",
           SWAP_TYPE_DESELECT = "deselect";
 
-      buildWidget( this );
+      var container = this;
 
-      function buildWidget( container ) {
+      buildWidget();
+
+
+      function throwException( msg ) {
+         var exMsg = "PickAndChoose error for " + $( container ).prop( "id" ) + ":  " + msg;
+
+         if( settings.showErrors ) {
+            container.append( exMsg );
+         }
+
+         throw exMsg;
+      }
+
+      function validate( unselectedSelect, selectedSelect ) {
+         var unselectedItems = null,
+             selectedItems   = null;
+
+         if( !settings.createSelectElements ) {
+            // If PickAndChoose was configured to use existing <select> elements, check to make sure they exist.
+
+            if( unselectedSelect == null || unselectedSelect.length === 0 ) {
+               throwException( "Could not find '" + settings.unselectedId + "'" );
+            }
+
+            if( selectedSelect == null || selectedSelect.length === 0 ) {
+               throwException( "Could not find '" + settings.selectedId + "'" );
+            }
+
+            // Grab the data in the <select>s
+            unselectedItems = unselectedSelect.find( "option" );
+            selectedItems   = selectedSelect.find( "option" );
+         } else {
+            // PickAndChoose was configured to create <select>s from supplied data
+            unselectedItems = settings.unselectedItems;
+            selectedItems   = settings.selectedItems;
+         }
+
          // Scan for keys that appear in both the unselected and selected data sets
 
-         $.each( settings.unselectedItems, function(prevKey, prevValue) {
-            $.each( settings.selectedItems, function(key, value) {
-               if( prevKey === key ) {
-                  var errMsg = "PickAndChoose initialization error for "
-                             + $( container ).attr( "id" )
-                             + ":  key '" + prevKey
-                             + "' appears in both unselected and selected items"
-
-                  if( settings.showErrors ) {
-                     container.append( errMsg );
+         if( unselectedItems != null && selectedItems != null ) {
+            $.each( unselectedItems, function(prevKey, prevValue) {
+               $.each( selectedItems, function(key, value) {
+                  if( prevKey === key ) {
+                     throwException( "key '" + prevKey + "' appears in both unselected and selected items" );
                   }
-
-                  throw errMsg;
-               }
+               } );
             } );
-         } );
+         }
+      }
+
+      function buildWidget() {
+         var unselectedSelect = null,
+             selectedSelect   = null;
+
+         if( !settings.createSelectElements ) {
+            unselectedSelect = $( "#" + settings.unselectedId );
+            selectedSelect   = $( "#" + settings.selectedId );
+         }
+
+         validate( unselectedSelect, selectedSelect );
 
          // create containers
 
-         var unselectedContainer = $( "<div/>", {
-            class : settings.unselectedContainerClass
-         } );
+         var unselectedContainer = $( "<div/>" );
+         var buttonContainer     = $( "<div/>" );
+         var selectedContainer   = $( "<div/>" );
 
-         var buttonContainer = $( "<div/>", {
-            class : settings.buttonContainerClass
-         } );
+         if( settings.createSelectElements ) {
+            // create unselected <select>
 
-         var selectedContainer = $( "<div/>", {
-            class : settings.selectedContainerClass,
-         } );
-
-         // create unselected container content
-
-         var unselectedSelect = $( "<select/>", {
-            id : settings.unselectedId,
-            name : settings.unselectedName,
-            multiple : ""
-         } );
-
-         if( settings.unselectedItems != null ) {
-            $.each( settings.unselectedItems, function(key, value) {   
-               unselectedSelect.append( $("<option/>")
-                                          .text(key)
-                                          .attr("value", value) );
+            unselectedSelect = $( "<select/>", {
+               id : settings.unselectedId,
+               name : settings.unselectedName
             } );
+
+            if( settings.unselectedItems != null ) {
+               $.each( settings.unselectedItems, function(key, value) {   
+                  unselectedSelect.append( $("<option/>")
+                                             .text(key)
+                                             .attr("value", value) );
+               } );
+            }
+
+            // create selected <select>
+
+            selectedSelect = $( "<select/>", {
+               id : settings.selectedId,
+               name : settings.selectedName
+            } );
+
+            if( settings.selectedItems != null ) {
+               $.each( settings.selectedItems, function(key, value) {   
+                  selectedSelect.append( $("<option></option>")
+                                             .text(key)
+                                             .attr("value", value) );
+               } );
+            }
          }
+
+         unselectedSelect.prop( "multiple", true );
+         selectedSelect.prop( "multiple", true );
 
          unselectedSelect.appendTo( unselectedContainer );
-
-         // create selected container content
-
-         var selectedSelect = $( "<select/>", {
-            id : settings.selectedId,
-            name : settings.selectedName,
-            multiple : ""
-         } );
-
-         if( settings.selectedItems != null ) {
-            $.each( settings.selectedItems, function(key, value) {   
-               selectedSelect.append( $("<option></option>")
-                                          .text(key)
-                                          .attr("value", value) );
-            } );
-         }
-
          selectedSelect.appendTo( selectedContainer );
 
-         // create button container content
-         
+         // create buttons
+
          var btnSelect = $( "<button/>", {
-            class : settings.buttonSelectClass,
             text  : settings.buttonSelectText,
-            type  : "button"   // HTML spec:  the default type for <button> is "submit".  How could someone think that's a good idea?
+            type  : "button"   // HTML spec:  the default type for <button> is "submit".  How could anyone have thought that was a good idea?
          } );
 
          var btnSelectAll = $( "<button/>", {
-            class : settings.buttonSelectAllClass,
             text  : settings.buttonSelectAllText,
-            type  : "button"   // HTML spec:  the default type for <button> is "submit".  How could someone think that's a good idea?
+            type  : "button"   // HTML spec:  the default type for <button> is "submit".  How could anyone have thought that was a good idea?
          } );
 
          var btnDeselect = $( "<button/>", {
-            class : settings.buttonDeselectClass,
             text  : settings.buttonDeselectText,
-            type  : "button"   // HTML spec:  the default type for <button> is "submit".  How could someone think that's a good idea?
+            type  : "button"   // HTML spec:  the default type for <button> is "submit".  How could anyone have thought that was a good idea?
          } );
 
          var btnDeselectAll = $( "<button/>", {
-            class : settings.buttonDeselectAllClass,
             text  : settings.buttonDeselectAllText,
-            type  : "button"   // HTML spec:  the default type for <button> is "submit".  How could someone think that's a good idea?
+            type  : "button"   // HTML spec:  the default type for <button> is "submit".  How could anyone have thought that was a good idea?
          } );
 
          btnSelect.on( "click", function() {
@@ -203,9 +260,18 @@
          btnDeselect.appendTo( buttonContainer );
          btnDeselectAll.appendTo( buttonContainer );
 
+         if( settings.addCssClasses ) {
+            container.addClass( settings.containerClass );
+            unselectedContainer.addClass( settings.unselectedContainerClass );
+            buttonContainer.addClass( settings.buttonContainerClass );
+            selectedContainer.addClass( settings.selectedContainerClass );
+            btnSelect.addClass( settings.buttonSelectClass );
+            btnSelectAll.addClass( settings.buttonSelectAllClass );
+            btnDeselect.addClass( settings.buttonDeselectClass );
+            btnDeselectAll.addClass( settings.buttonDeselectAllClass );
+         }
+
          // add elements to the page
-         
-         container.addClass( settings.containerClass );
 
          container.append( unselectedContainer );
          container.append( buttonContainer );
