@@ -39,7 +39,7 @@ Invoke the plugin on an empty &lt;div&gt; and pass properties as you prefer.  Th
 | `selectedName` | The name of the &lt;select&gt; containing the selected items | pacSelectedItems |
 | `unselectedItems` | Key/value pairs of unselected items to populate the unselected items' &lt;select&gt; with | null |
 | `selectedItems` | Key/value pairs of items to populate the selected items' &lt;select&gt; with | null |
-| `onChangeCallback` | A callback function to execute when the user uses the buttons.  The callback will only fire if the user's action resulted in a change.  For example, attempting to move items from an empty &lt;select&gt; doesn't change anything. | null |
+| `onChangeCallback` | A callback function to execute when the user uses the buttons.  The callback only fires if the user's action resulted in a change. | null |
 | `showErrors` | Determines whether to display initialization errors in the page.  If set to true, your users will see them, so you might choose to treat this as a debug option.  Regardless of the setting, the plugin will throw initialization errors as exceptions. | false |
 
 

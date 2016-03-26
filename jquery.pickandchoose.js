@@ -68,7 +68,8 @@
          // Key/value pairs of items to populate the selected items' <select> with
          selectedItems : null,
 
-         // A callback function to execute when the user uses the buttons
+         // A callback function to execute when the user uses the buttons.  The
+         // callback only fires if the user's action resulted in a change.
          onChangeCallback : null,
 
          // Determines whether to display initialization errors in the page.
