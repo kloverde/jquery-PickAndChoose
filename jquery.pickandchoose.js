@@ -11,6 +11,8 @@
  */
 
 (function( $ ) {
+   "use strict";
+
    $.fn.pickAndChoose = function( options ) {
 
       var settings = $.extend( {
