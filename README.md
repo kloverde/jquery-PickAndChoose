@@ -1,6 +1,3 @@
-# This project is an unfinished work in progress.  Check back soon.
-
-
 PickAndChoose
 =============
 
