@@ -30,12 +30,31 @@
             background-color: #0000FF !important;
             color: #FFFFFF !important;
          }
+
+         div#callbackOutput {
+            margin-top: 20px;
+            width: 500px;
+            min-height: 80px;
+            border: 1px solid #000000;
+         }
       </style>
 
       <script type="text/javascript" src="http://code.jquery.com/jquery-1.12.1.min.js"></script>
       <script type="text/javascript" src="jquery.pickAndChoose.js"></script>
 
       <script type="text/javascript">
+         function callback( operation, recipient, items ) {
+            var div = $( "#callbackOutput" );
+
+            div.html( "Operation: " + operation + "<br/>" );
+            div.append( "Recipient of items: " + recipient.prop("id") + "<br/>" );
+            div.append( "Received items:<br/>" );
+
+            $.each( items, function(idx, item) {
+               div.append( "key: " + item.key + ", value: " + item.value + "<br/>" );
+            } );
+         }
+
          $( document ).ready( function() {
             $( "#widget1" ).pickAndChoose( {
                unselectedItems : {
@@ -43,7 +62,7 @@
                                    "Choice 2" : "choice2",
                                    "Choice 4" : "choice4",
                                    "Choice 5" : "choice5",
-                                   "Choice 7" : "choice5",
+                                   "Choice 7" : "choice7",
                                  },
 
                selectedItems   : {
@@ -80,11 +99,28 @@
                                  }
             } );
 
-            try {
-               $( "#widget3" ).pickAndChoose( {
-                  selectedId : "widget3Selected",
+            $( "#widget3" ).pickAndChoose( {
+               selectedId       : "widget3Selected",
+               selectedName     : "widget3Selected",
+               unselectedId     : "widget3Unselected",
+               unselectedName   : "widget3Unselected",
 
-                  unselectedId : "widget3Unselected",
+               unselectedItems  : {
+                                   "Choice 1" : "choice1",
+                                   "Choice 2" : "choice2",
+                                   "Choice 3" : "choice4",
+                                   "Choice 4" : "choice5",
+                                   "Choice 5" : "choice5",
+                                 },
+               onChangeCallback : callback
+            } );
+
+            try {
+               $( "#widget4" ).pickAndChoose( {
+                  selectedId      : "widget4Selected",
+                  selectedName    : "widget4Selected",
+                  unselectedId    : "widget4Unselected",
+                  unselectedName  : "widget4Unselected",
 
                   unselectedItems : {
                                       "Choice 1" : "choice1",
@@ -108,23 +144,33 @@
    </head>
 
    <body>
-      <h2>Successful initialization</h2>
-      <div id="widget1"></div>
+      <form name="myForm" action="non-existent-url">  <!-- The form is just here to demonstrate that the <button>s are of type "button", not "submit" -->
+         <h2>Successful initialization</h2>
+         <div id="widget1"></div>
 
-      <h2>Overriding default configuration:  ensuring uniqueness of &lt;select&gt; identifiers &amp; changing button properties</h2>
-      <h4>See the documentation or plugin code for a complete list of customization options.</h4>
-      <div id="widget2"></div>
+         <h2>Overriding default configuration:  ensuring uniqueness of &lt;select&gt; identifiers &amp; changing button properties</h2>
+         <h4>
+            Note that for the first time, IDs and names were passed in.  This isn't<br/>
+            necessary for the proper operation of the script, but if you intend to<br/>
+            submit a form, you'll need to use these properties.<br/><br/>
+            See README.md or the plugin code for a complete list of customization options.</h4>
+         <div id="widget2"></div>
 
-      <h2>Failed initialization</h2>
-      <h4>
-         If you attempt to initialize the widget with the same key present in both<br/>
-         &ltselect&gts, the widget will not initialize and an exception will be<br/>
-         thrown.  If showErrors is set to true, the exception message is written <br/>
-         to the container (see below).  If you can't be sure of the integrity of<br/>
-         your data, and if you want the rest of your page's JavaScript to continue<br/>
-         in the event of an initialization failure, be sure to wrap the plugin<br/>
-         invocation in a try/catch.
-      </h4>
-      <div id="widget3"></div>
+         <h2>Demonstrating callback</h2>
+         <div id="widget3"></div>
+         <div id="callbackOutput">Look here after making some selections</div>
+
+         <h2>Failed initialization</h2>
+         <h4>
+            If you attempt to initialize the widget with the same key present in both<br/>
+            &ltselect&gts, the widget will not initialize and an exception will be<br/>
+            thrown.  If showErrors is set to true, the exception message is written <br/>
+            to the container (see below).  If you can't be sure of the integrity of<br/>
+            your data, and if you want the rest of your page's JavaScript to continue<br/>
+            in the event of an initialization failure, be sure to wrap the plugin<br/>
+            invocation in a try/catch.
+         </h4>
+         <div id="widget4"></div>
+      </form>
    </body>
 </html>

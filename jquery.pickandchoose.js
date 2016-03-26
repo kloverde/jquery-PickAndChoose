@@ -60,10 +60,10 @@
          // The name of the <select> containing the selected items
          selectedName : "pacSelectedItems",
 
-         // JSON of items to populate the unselected items' <select> with
+         // Key/value pairs of items to populate the unselected items' <select> with
          unselectedItems : null,
 
-         // JSON of items to populate the selected items' <select> with
+         // Key/value pairs of items to populate the selected items' <select> with
          selectedItems : null,
 
          // A callback function to execute when the user uses the buttons
@@ -76,9 +76,8 @@
          showErrors : false
       }, options );
 
-      var GROUP_STATE_NONE = "none",
-          GROUP_STATE_SOME = "some",
-          GROUP_STATE_ALL  = "all";
+      var SWAP_TYPE_SELECT   = "select",
+          SWAP_TYPE_DESELECT = "deselect";
 
       buildWidget( this );
 
@@ -126,58 +125,13 @@
 
          if( settings.unselectedItems != null ) {
             $.each( settings.unselectedItems, function(key, value) {   
-               unselectedSelect.append( $("<option></option>")
+               unselectedSelect.append( $("<option/>")
                                           .text(key)
                                           .attr("value", value) );
             } );
          }
 
          unselectedSelect.appendTo( unselectedContainer );
-
-         // create button container content
-         
-         var btnSelect = $( "<button/>", {
-            class : settings.buttonSelectClass,
-            text : settings.buttonSelectText
-         } );
-
-         var btnSelectAll = $( "<button/>", {
-            class : settings.buttonSelectAllClass,
-            text : settings.buttonSelectAllText
-         } );
-
-         var btnDeselect = $( "<button/>", {
-            class : settings.buttonDeselectClass,
-            text : settings.buttonDeselectText
-         } );
-
-         var btnDeselectAll = $( "<button/>", {
-            class : settings.buttonDeselectAllClass,
-            text : settings.buttonDeselectAllText
-         } );
-
-         if( typeof settings.onChangeCallback === "function" ) {
-            btnSelect.on( "click", function() {
-               settings.onChangeCallback();
-            } );
-
-            btnSelectAll.on( "click", function() {
-               settings.onChangeCallback();
-            } );
-
-            btnDeselect.on( "click", function() {
-               settings.onChangeCallback();
-            } );
-
-            btnDeselectAll.on( "click", function() {
-               settings.onChangeCallback();
-            } );
-         };
-
-         btnSelect.appendTo( buttonContainer );
-         btnSelectAll.appendTo( buttonContainer );
-         btnDeselect.appendTo( buttonContainer );
-         btnDeselectAll.appendTo( buttonContainer );
 
          // create selected container content
 
@@ -197,6 +151,53 @@
 
          selectedSelect.appendTo( selectedContainer );
 
+         // create button container content
+         
+         var btnSelect = $( "<button/>", {
+            class : settings.buttonSelectClass,
+            text  : settings.buttonSelectText,
+            type  : "button"   // HTML spec:  the default type for <button> is "submit".  How could someone think that's a good idea?
+         } );
+
+         var btnSelectAll = $( "<button/>", {
+            class : settings.buttonSelectAllClass,
+            text  : settings.buttonSelectAllText,
+            type  : "button"   // HTML spec:  the default type for <button> is "submit".  How could someone think that's a good idea?
+         } );
+
+         var btnDeselect = $( "<button/>", {
+            class : settings.buttonDeselectClass,
+            text  : settings.buttonDeselectText,
+            type  : "button"   // HTML spec:  the default type for <button> is "submit".  How could someone think that's a good idea?
+         } );
+
+         var btnDeselectAll = $( "<button/>", {
+            class : settings.buttonDeselectAllClass,
+            text  : settings.buttonDeselectAllText,
+            type  : "button"   // HTML spec:  the default type for <button> is "submit".  How could someone think that's a good idea?
+         } );
+
+         btnSelect.on( "click", function() {
+            swap( SWAP_TYPE_SELECT, unselectedSelect, selectedSelect );
+         } );
+
+         btnSelectAll.on( "click", function() {
+            swapAll( SWAP_TYPE_SELECT, unselectedSelect, selectedSelect );
+         } );
+
+         btnDeselect.on( "click", function() {
+            swap( SWAP_TYPE_DESELECT, selectedSelect, unselectedSelect );
+         } );
+
+         btnDeselectAll.on( "click", function() {
+            swapAll( SWAP_TYPE_DESELECT, selectedSelect, unselectedSelect );
+         } );
+
+         btnSelect.appendTo( buttonContainer );
+         btnSelectAll.appendTo( buttonContainer );
+         btnDeselect.appendTo( buttonContainer );
+         btnDeselectAll.appendTo( buttonContainer );
+
          // add elements to the page
          
          container.addClass( settings.containerClass );
@@ -204,6 +205,38 @@
          container.append( unselectedContainer );
          container.append( buttonContainer );
          container.append( selectedContainer );
+      }
+
+      function swap( operationType, from, to ) {
+         var selectedItems = from.find( "option:selected" );
+         var movedItems = new Array( selectedItems.length );  // Among the many ways of populating an array in JavaScript, a fixed-length
+                                                              // array with direct assignments in a loop incrementing the index had the
+                                                              // best fit for performance across multiple browsers and OSes, even though
+                                                              // it was only the fastest in Chrome.  Tested on jsperf.com.
+         var i = 0;
+
+         selectedItems.each( function() {
+            var elem = $( this );
+            var obj = new Object();
+
+            obj.key = elem.text();
+            obj.value = elem.val();
+
+            movedItems[ i++ ] = obj;
+            elem.appendTo( to );
+         } );
+
+         if( typeof settings.onChangeCallback === "function" ) {
+            settings.onChangeCallback( operationType, to, movedItems );
+         }
+      }
+
+      function swapAll( operationType, from, to ) {
+         from.find( "option" ).each( function() {
+            $( this ).prop( "selected", true );
+         } );
+
+         swap( operationType, from, to );
       }
    };
 }( jQuery ));
