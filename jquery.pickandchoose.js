@@ -6,6 +6,8 @@
  *
  * Copyright (c) 2016 Kurtis LoVerde
  * All rights reserved
+ *
+ * Donations:  https://paypal.me/KurtisLoVerde/6
  */
 
 (function( $ ) {
