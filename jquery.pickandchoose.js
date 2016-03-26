@@ -228,7 +228,7 @@
             elem.appendTo( to );
          } );
 
-         if( typeof settings.onChangeCallback === "function" ) {
+         if( typeof settings.onChangeCallback === "function" && movedItems.length > 0 ) {
             settings.onChangeCallback( operationType, to, movedItems );
          }
       }
