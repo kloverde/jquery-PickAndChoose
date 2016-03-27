@@ -20,29 +20,29 @@
          // false, no CSS classes will be added, even if you override their default values.
          addCssClasses : true,
 
-         // The class name of the <div> which contains everything
+         // The CSS name of the <div> which contains everything
          containerClass : "pacContainer",
 
-         // The class name of the <div> which contains the <select> of unselected items
+         // The CSS class of the <div> containing the <select> of unselected items
          unselectedContainerClass : "pacUnselectedContainer",
 
-         // The class name of the <div> containing the buttons
+         // The CSS class of the <div> containing the <select> of selected items
+         selectedContainerClass : "pacSelectedContainer",
+
+         // The CSS class of the <div> containing the buttons
          buttonContainerClass : "pacButtonContainer",
 
-         // The class of the select <button>
+         // The CSS class of the select <button>
          buttonSelectClass : "pacButtonSelect",
 
-         // The class of the select-all <button>
+         // The CSS class of the select-all <button>
          buttonSelectAllClass : "pacButtonSelectAll",
 
-         // The class of the deselect <button>
+         // The CSS class of the deselect <button>
          buttonDeselectClass : "pacButtonDeselect",
 
-         // The class of the deselect-all <button>
+         // The CSS class of the deselect-all <button>
          buttonDeselectAllClass : "pacButtonDeselectAll",
-
-         // The class name of the <div> containing the user selections <select>
-         selectedContainerClass : "pacSelectedContainer",
 
          // The text of the select button
          buttonSelectText : ">",
@@ -58,7 +58,7 @@
 
          // If true, <select> elements will be created based on the data you provide
          // in the unselectedItems and selectedItems properties, and they will be
-         // named according to the unselectedId, unselectedName, selectedId, and
+         // named according to the unselectedId, unselectedName, selectedId and
          // selectedName properties.  If false, the unselectedId and selectedId
          // properties will be used to locate preexisting <select>s in the page.
          createSelectElements : true,
