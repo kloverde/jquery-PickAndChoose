@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 
 <!--
-   PickAndChoose v1.0
+   PickAndChoose v1.1
    https://www.github.com/kloverde/jquery-PickAndChoose
 
    This software is licensed under the 3-clause BSD license.
@@ -117,8 +117,14 @@
                onChangeCallback : callback
             } );
 
+            $( "#widget4" ).pickAndChoose( {
+                createSelectElements : false,
+                unselectedId         : "select1",
+                selectedId           : "select2"
+             } );
+
             try {
-               $( "#widget4" ).pickAndChoose( {
+               $( "#widget5" ).pickAndChoose( {
                   selectedId      : "widget4Selected",
                   selectedName    : "widget4Selected",
                   unselectedId    : "widget4Unselected",
@@ -140,7 +146,7 @@
             } catch( e ) {
             }
 
-            $( "#widget4" ).append( "<p>This line was successfully written via script due to catching the exception</p>" );
+            $( "#widget5" ).append( "<p>This line was successfully written via script due to catching the exception</p>" );
          } );
       </script>
    </head>
@@ -150,7 +156,7 @@
          <h2>Successful initialization</h2>
          <div id="widget1"></div>
 
-         <h2>Overriding default configuration:  ensuring uniqueness of &lt;select&gt; identifiers &amp; changing button properties</h2>
+         <h2>Overriding default configuration:  ensuring uniqueness of &lt;select&gt; identifiers &amp; altering button properties</h2>
          <h4>
             Note that for the first time, IDs and names were passed in.<br/>
             See README.md or the plugin code for a complete list of customization options.
@@ -160,6 +166,26 @@
          <h2>Demonstrating callback</h2>
          <div id="widget3"></div>
          <div id="callbackOutput">Look here after making some selections</div>
+
+         <h2>Initializing with preexisting &lt;select&gt; elements</h2>
+         <h4>
+            Unlike the other examples seen thus far, the &lt;select&gt;s seen here were<br/>
+            not created by PickAndChoose; they were already present in the page.<br/>
+            The buttons were still created dynamically.  If you go this route, put<br/>
+            the &lt;select&gt;s adjacent to each other in their own container, with no<br/>
+            other content inside. 
+         </h4>
+         <div id="widget4">
+            <select id="select1" name="select1">
+               <option value="choice1">Choice 1</option>
+               <option value="choice1">Choice 2</option>
+               <option value="choice1">Choice 3</option>
+               <option value="choice1">Choice 4</option>
+            </select>
+
+            <select id="select2" name="select2">
+            </select>
+         </div>
 
          <h2>Failed initialization</h2>
          <h4>
@@ -171,11 +197,11 @@
             in the event of an initialization failure, be sure to wrap the plugin<br/>
             invocation in a try/catch.
          </h4>
-         <div id="widget4"></div>
+         <div id="widget5"></div>
       </form>
 
       <h2>Donations</h2>
-      Your support is greatly appreciated and it motivates me to release more open source software.<br/>
+      Your support is greatly appreciated, and it motivates me to keep this project alive and to release more open source software.<br/>
       <a href="https://paypal.me/KurtisLoVerde/6" target="new">https://paypal.me/KurtisLoVerde/6</a>
    </body>
 </html>
