@@ -1,5 +1,5 @@
 /*
- * PickAndChoose v1.0
+ * PickAndChoose v1.1
  * https://www.github.com/kloverde/jquery-PickAndChoose
  *
  * This software is licensed under the 3-clause BSD license.
@@ -57,43 +57,38 @@
          buttonDeselectAllText : "<<",
 
          // If true, <select> elements will be created based on the data you provide
-         // in the unselectedItems and selectedItems properties, and they wil be
+         // in the unselectedItems and selectedItems properties, and they will be
          // named according to the unselectedId, unselectedName, selectedId, and
-         // selectedName properties.
-         //
-         // If false, PickAndChoose will use the unselectedId and selectedId
-         // properties to locate the <select>s in the page.  The unselectedName
-         // and selectedName properties play no role here.
+         // selectedName properties.  If false, the unselectedId and selectedId
+         // properties will be used to locate preexisting <select>s in the page.
          createSelectElements : true,
 
-         // The ID of the <select> containing the unselected items.  If you provide
-         // PickAndChoose with your own <select> elements instead of having it
-         // construct them for you, this setting is ignored.
+         // The ID of the <select> containing the unselected items, whether the
+         // <select> is created for you or you provide your own
          unselectedId : "pacUnselectedItems",
 
          // The name of the <select> containing the unselected items.  If you provide
-         // PickAndChoose with your own <select> elements instead of having it
-         // construct them for you, this setting is ignored.
+         // your own <select> elements instead of having them constructed for you,
+         // this setting is ignored.
          unselectedName : "pacUnselectedItems",
 
-         // The ID of the <select> containing the selected items.  If you provide
-         // PickAndChoose with your own <select> elements instead of having it
-         // construct them for you, this setting is ignored.
+         // The ID of the <select> containing the selected items, whether the
+         // <select> is created for you or you provide your own
          selectedId : "pacSelectedItems",
 
          // The name of the <select> containing the selected items.  If you provide
-         // PickAndChoose with your own <select> elements instead of having it
-         // construct them for you, this setting is ignored.
+         // your own <select> elements instead of having them constructed for you,
+         // this setting is ignored.
          selectedName : "pacSelectedItems",
 
          // Key/value pairs of items to populate the unselected items' <select> with.
-         // If you provide PickAndChoose with your own <select> elements instead of
-         // having it construct them for you, this setting is ignored.
+         // If you provide your own <select> elements instead of having them
+         // constructed for you, this setting is ignored.
          unselectedItems : null,
 
          // Key/value pairs of items to populate the selected items' <select> with.
-         // If you provide PickAndChoose with your own <select> elements instead of
-         // having it construct them for you, this setting is ignored.
+         // If you provide your own <select> elements instead of having them
+         // constructed for you, this setting is ignored.
          selectedItems : null,
 
          // A callback function to execute when the user uses the buttons.  The
@@ -116,7 +111,7 @@
 
 
       function throwException( msg ) {
-         var exMsg = "PickAndChoose error for " + $( container ).prop( "id" ) + ":  " + msg;
+         var exMsg = "PickAndChoose error in " + $( container ).prop( "id" ) + ":  " + msg;
 
          if( settings.showErrors ) {
             container.append( exMsg );
@@ -125,10 +120,38 @@
          throw exMsg;
       }
 
-      function validate( unselectedSelect, selectedSelect ) {
-         var unselectedItems = null,
-             selectedItems   = null;
+      // Checks for a duplicate key in a <select>
+      function checkSelectForDuplicate( items ) {
+         for( var i = 0; i < items.length; i++ ) {
+            var prevKey = $( items[i] ).text();
 
+            for( var j = i + 1; j < items.length; j++ ) {
+               if( prevKey === $(items[j]).text() ) {
+                  var select = $( items ).parent();
+                  throwException( select.prop("id") + " has duplicate key '" + prevKey + "'" );
+               }
+            }
+         }
+      }
+
+      // Checks for the same key existing in both <select>s
+      function checkSelectsForDuplicates( items1, items2 ) {
+         for( var i = 0; i < items1.length; i++ ) {
+            var text1 = $( items1[i] ).text();
+
+            for( var j = 0; j < items2.length; j++ ) {
+               if( text1 === $(items2[j]).text() ) {
+                  var select1 = $( items1[0] ).parent();
+                  var select2 = $( items2[0] ).parent();
+
+                  throwException( select1.prop("id") + " and " + select2.prop("id")
+                                + " have the same key '" + text1 + "'" );
+               }
+            }
+         }
+      }
+
+      function validate( unselectedSelect, selectedSelect ) {
          if( !settings.createSelectElements ) {
             // If PickAndChoose was configured to use existing <select> elements, check to make sure they exist.
 
@@ -140,25 +163,34 @@
                throwException( "Could not find '" + settings.selectedId + "'" );
             }
 
-            // Grab the data in the <select>s
-            unselectedItems = unselectedSelect.find( "option" );
-            selectedItems   = selectedSelect.find( "option" );
+            // Check the <select>s for duplicate keys
+
+            var unselectedItems = unselectedSelect.find( "option" );
+            var selectedItems   = selectedSelect.find( "option" );
+
+            checkSelectForDuplicate( unselectedItems );
+            checkSelectForDuplicate( selectedItems );
+            checkSelectsForDuplicates( unselectedItems, selectedItems );
          } else {
             // PickAndChoose was configured to create <select>s from supplied data
-            unselectedItems = settings.unselectedItems;
-            selectedItems   = settings.selectedItems;
-         }
 
-         // Scan for keys that appear in both the unselected and selected data sets
+            var unselectedItems = settings.unselectedItems;
+            var selectedItems   = settings.selectedItems;
 
-         if( unselectedItems != null && selectedItems != null ) {
-            $.each( unselectedItems, function(prevKey, prevValue) {
-               $.each( selectedItems, function(key, value) {
-                  if( prevKey === key ) {
-                     throwException( "key '" + prevKey + "' appears in both unselected and selected items" );
-                  }
+            // Check the seed data for the same key present in both data sets.
+            // It's not necessary to individually scan them for duplicates -
+            // duplicates are impossible in that scenario.
+
+            if( unselectedItems != null && selectedItems != null ) {
+               $.each( unselectedItems, function(prevKey, prevValue) {
+                  $.each( selectedItems, function(key, value) {
+                     if( prevKey === key ) {
+                        throwException( "settings.unselectedItems and settings.selectedItems have the same key "
+                                      + "'" + prevKey + "'" );
+                     }
+                  } );
                } );
-            } );
+            }
          }
       }
 
@@ -191,7 +223,7 @@
                $.each( settings.unselectedItems, function(key, value) {   
                   unselectedSelect.append( $("<option/>")
                                              .text(key)
-                                             .attr("value", value) );
+                                             .prop("value", value) );
                } );
             }
 
@@ -206,7 +238,7 @@
                $.each( settings.selectedItems, function(key, value) {   
                   selectedSelect.append( $("<option></option>")
                                              .text(key)
-                                             .attr("value", value) );
+                                             .prop("value", value) );
                } );
             }
          }
