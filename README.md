@@ -1,5 +1,5 @@
-PickAndChoose
-=============
+PickAndChoose v1.1
+==================
 
 See LICENSE for this software's licensing terms.
 
