@@ -1,5 +1,5 @@
 /*
- * PickAndChoose v1.1
+ * PickAndChoose v1.2
  * https://www.github.com/kloverde/jquery-PickAndChoose
  *
  *  This software is licensed under the 3-clause BSD license.
@@ -11,35 +11,30 @@
  */
 
 
-/* containers */
-
 .pacContainer {
    display: table;
-   vertical-align: middle;
+   height: 250px;
 }
 
-.pacContainer .msUnselectedContainer {
+.pacContainer .pacUnselectedContainer,
+.pacContainer .pacSelectedContainer {
    display: table-cell;
-   vertical-align:middle;
+   height: 100%;
+   vertical-align: middle;
 }
 
 .pacContainer .pacButtonContainer {
    display: table-cell;
+   height: 100%;
    vertical-align: middle;
    padding-left: 25px;
    padding-right: 25px;
 }
 
-.pacContainer .msSelectedContainer {
-   display: table-cell;
-   vertical-align:middle;
-}
-
-/* container content */
-
-.pacContainer select {
+.pacContainer .pacUnselectedContainer select,
+.pacContainer .pacSelectedContainer select {
    width: 200px;
-   height: 300px;
+   height: 100%;
 }
 
 .pacContainer .pacButtonContainer button.pacButtonSelect,

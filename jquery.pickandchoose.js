@@ -1,5 +1,5 @@
 /*
- * PickAndChoose v1.1
+ * PickAndChoose v1.2
  * https://www.github.com/kloverde/jquery-PickAndChoose
  *
  * This software is licensed under the 3-clause BSD license.
@@ -43,6 +43,9 @@
 
          // The CSS class of the deselect-all <button>
          buttonDeselectAllClass : "pacButtonDeselectAll",
+
+         // A CSS class to apply to all <options>s
+         optionCssClass : null,
 
          // The text of the select button
          buttonSelectText : ">",
@@ -90,6 +93,10 @@
          // If you provide your own <select> elements instead of having them
          // constructed for you, this setting is ignored.
          selectedItems : null,
+
+         // Determines whether to unhighlight an item after moving it to the other
+         // <select>.  Highlighted items appear as if they've been clicked.
+         unhighlightAfterMove : true,
 
          // A callback function to execute when the user uses the buttons.  The
          // callback only fires if the user's action resulted in a change.
@@ -194,6 +201,31 @@
          }
       }
 
+      // Creates an <option>.  'Key' is a string, but 'value' can be a
+      // string or an object.  Objects provide additional configuration.
+      function createSelectOption( key, value ) {
+         var option = $( "<option></option>" ).text( key );
+         var individualCssClass = "";
+
+         if( typeof value === "string" ) {
+            option.prop( "value", value )
+         } else if( typeof value === "object" ) {
+            option.prop( "value", value.value );
+         } else {
+            throwException( "Invalid value type (" + (typeof value) + ")")
+         }
+
+         if( value.cssClass != undefined && value.cssClass != null ) {
+            individualCssClass = value.cssClass;
+         }
+
+         option.addClass( (settings.optionCssClass != null ? settings.optionCssClass : "")
+                        + " "
+                        + individualCssClass );
+
+         return option;
+      }
+
       function buildWidget() {
          var unselectedSelect = null,
              selectedSelect   = null;
@@ -220,10 +252,8 @@
             } );
 
             if( settings.unselectedItems != null ) {
-               $.each( settings.unselectedItems, function(key, value) {   
-                  unselectedSelect.append( $("<option/>")
-                                             .text(key)
-                                             .prop("value", value) );
+               $.each( settings.unselectedItems, function(key, value) {
+                  unselectedSelect.append( createSelectOption(key, value) );
                } );
             }
 
@@ -235,10 +265,8 @@
             } );
 
             if( settings.selectedItems != null ) {
-               $.each( settings.selectedItems, function(key, value) {   
-                  selectedSelect.append( $("<option></option>")
-                                             .text(key)
-                                             .prop("value", value) );
+               $.each( settings.selectedItems, function(key, value) {
+                  selectedSelect.append( createSelectOption(key, value) );
                } );
             }
          }
@@ -326,6 +354,8 @@
             obj.value = elem.val();
 
             movedItems[ i++ ] = obj;
+
+            elem.prop( "selected", !settings.unhighlightAfterMove );
             elem.appendTo( to );
          } );
 
