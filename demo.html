@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 
 <!--
-   PickAndChoose v1.1
+   PickAndChoose v1.2
    https://www.github.com/kloverde/jquery-PickAndChoose
 
    This software is licensed under the 3-clause BSD license.
@@ -15,6 +15,7 @@
 <html lang="en-US">
    <head>
       <meta charset="UTF-8"/>
+      <meta http-equiv="X-UA-Compatible" content="IE=8"/>  <!-- IE 8 is so ancient that "compatibility mode" now means incompatibility mode.  Turn it off. -->
 
       <title>PickAndChoose Demo</title>
 
@@ -33,11 +34,40 @@
             color: #FFFFFF !important;
          }
 
-         div#callbackOutput {
+         #callbackOutput {
             margin-top: 20px;
             width: 500px;
             min-height: 80px;
             border: 1px solid #000000;
+         }
+
+         #widget5 select {
+            border: 1px solid black;
+         }
+
+         #widget5 select:hover {
+            border: 1px solid #0000FF;
+            background-color: #EDF9FC;
+         }
+
+         option.optionTextColor {
+            color: #FFFFFF;
+         }
+
+         option.optionStyle1 {
+            background-color: #6BC9E8;
+         }
+
+         option.optionStyle2 {
+            background-color: #C88DF0;
+         }
+
+         option.optionStyle3 {
+            background-color: #F7A414;
+         }
+
+         p, li{
+            width: 510px;
          }
       </style>
 
@@ -45,32 +75,16 @@
       <script type="text/javascript" src="jquery.pickAndChoose.js"></script>
 
       <script type="text/javascript">
-         function callback( operation, recipient, items ) {
-            var div = $( "#callbackOutput" );
-
-            div.html( "Operation: " + operation + "<br/>" );
-            div.append( "Recipient of items: " + recipient.prop("id") + "<br/>" );
-            div.append( "Received items:<br/>" );
-
-            $.each( items, function(idx, item) {
-               div.append( "key: " + item.key + ", value: " + item.value + "<br/>" );
-            } );
-         }
-
          $( document ).ready( function() {
             $( "#widget1" ).pickAndChoose( {
-               unselectedItems : {
-                                   "Choice 1" : "choice1",
+               unselectedItems : { "Choice 1" : "choice1",
                                    "Choice 2" : "choice2",
                                    "Choice 4" : "choice4",
                                    "Choice 5" : "choice5",
-                                   "Choice 7" : "choice7",
-                                 },
+                                   "Choice 7" : "choice7" },
 
-               selectedItems   : {
-                                    "Choice 3" : "choice3",
-                                    "Choice 6" : "choice6"
-                                 }
+               selectedItems   : { "Choice 3" : "choice3",
+                                   "Choice 6" : "choice6" }
             } );
 
             $( "#widget2" ).pickAndChoose( {
@@ -87,18 +101,14 @@
                buttonSelectAllClass   : "special",
                buttonDeselectAllClass : "special",
 
-               unselectedItems : {
-                                   "Choice 1" : "choice1",
+               unselectedItems : { "Choice 1" : "choice1",
                                    "Choice 2" : "choice2",
                                    "Choice 4" : "choice4",
                                    "Choice 5" : "choice5",
-                                   "Choice 7" : "choice7",
-                                 },
+                                   "Choice 7" : "choice7" },
 
-               selectedItems   : {
-                                    "Choice 3" : "choice3",
-                                    "Choice 6" : "choice6"
-                                 }
+               selectedItems   : { "Choice 3" : "choice3",
+                                   "Choice 6" : "choice6" }
             } );
 
             $( "#widget3" ).pickAndChoose( {
@@ -107,38 +117,58 @@
                unselectedId     : "widget3Unselected",
                unselectedName   : "widget3Unselected",
 
-               unselectedItems  : {
-                                   "Choice 1" : "choice1",
-                                   "Choice 2" : "choice2",
-                                   "Choice 3" : "choice3",
-                                   "Choice 4" : "choice4",
-                                   "Choice 5" : "choice5",
-                                 },
-               onChangeCallback : callback
+               unselectedItems  : { "Choice 1" : "choice1",
+                                    "Choice 2" : "choice2",
+                                    "Choice 3" : "choice3",
+                                    "Choice 4" : "choice4",
+                                    "Choice 5" : "choice5" },
+
+               onChangeCallback : changeCallback
             } );
 
             $( "#widget4" ).pickAndChoose( {
+                selectedId           : "widget4Selected",
+                selectedName         : "widget4Selected",
+                unselectedId         : "widget4Unselected",
+                unselectedName       : "widget4Unselected",
+
                 createSelectElements : false,
                 unselectedId         : "select1",
                 selectedId           : "select2"
              } );
 
+            $( "#widget5" ).pickAndChoose( {
+                selectedId           : "widget5Selected",
+                selectedName         : "widget5Selected",
+                unselectedId         : "widget5Unselected",
+                unselectedName       : "widget5Unselected",
+
+               optionCssClass : "optionTextColor",
+
+               unselectedItems : { "Choice 1" : { value    : "choice1",
+                                                  cssClass : "optionStyle1" },
+
+                                   "Choice 2" : { value    : "choice2",
+                                                  cssClass : "optionStyle2" },
+
+                                   "Choice 3" : { value    : "choice3",
+                                                  cssClass : "optionStyle3" } }
+            } );
+
             try {
-               $( "#widget5" ).pickAndChoose( {
+               $( "#widget6" ).pickAndChoose( {
                   selectedId      : "widget4Selected",
                   selectedName    : "widget4Selected",
                   unselectedId    : "widget4Unselected",
                   unselectedName  : "widget4Unselected",
 
-                  unselectedItems : {
-                                      "Choice 1" : "choice1",
+                  unselectedItems : { "Choice 1" : "choice1",
                                       "Choice 2" : "choice2",
                                       "Choice 3" : "choice3",
                                       "Choice 4" : "choice4",
                                       "Choice 5" : "choice5",
                                       "Choice 6" : "choice6",
-                                      "Choice 7" : "choice7",
-                                    },
+                                      "Choice 7" : "choice7" },
 
                   selectedItems   : { "Choice 3" : "value does not matter when scanning for duplicate keys" },
                   showErrors : true
@@ -146,8 +176,25 @@
             } catch( e ) {
             }
 
-            $( "#widget5" ).append( "<p>This line was successfully written via script due to catching the exception</p>" );
+            $( "#widget6" ).append( "<p>This line was successfully written via script due to catching the exception</p>" );
          } );
+
+         function optionOnClick() {
+             var count = $( "#widget5Unselected select option:selected" ).length;
+             $( "#numOptionsSelected" ).html( count + " options selected" );
+          }
+
+          function changeCallback( operation, recipient, items ) {
+             var div = $( "#callbackOutput" );
+
+             div.html( "Operation: " + operation + "<br/>" );
+             div.append( "Recipient of items: " + recipient.prop("id") + "<br/>" );
+             div.append( "Received items:<br/>" );
+
+             $.each( items, function(idx, item) {
+                div.append( "key: " + item.key + ", value: " + item.value + "<br/>" );
+             } );
+          }
       </script>
    </head>
 
@@ -157,10 +204,12 @@
          <div id="widget1"></div>
 
          <h2>Overriding default configuration:  ensuring uniqueness of &lt;select&gt; identifiers &amp; altering button properties</h2>
-         <h4>
-            Note that for the first time, IDs and names were passed in.<br/>
-            See README.md or the plugin code for a complete list of customization options.
-         </h4>
+         <p>
+            Note that for the first time, IDs and names were passed in.  You need to do this if you have more than one widget in
+            your page, since relying on the default value will result in duplicates.
+         </p>
+         <p>CSS styling has also been added to the buttons, and their default text has been changed.</p>
+         <p>See README.md or the plugin code for a complete list of customization options.</p>
          <div id="widget2"></div>
 
          <h2>Demonstrating callback</h2>
@@ -168,13 +217,13 @@
          <div id="callbackOutput">Look here after making some selections</div>
 
          <h2>Initializing with preexisting &lt;select&gt; elements</h2>
-         <h4>
-            Unlike the other examples seen thus far, the &lt;select&gt;s seen here were<br/>
-            not created by PickAndChoose; they were already present in the page.<br/>
-            The buttons were still created dynamically.  If you go this route, put<br/>
-            the &lt;select&gt;s adjacent to each other in their own container, with no<br/>
+         <p>
+            Unlike the other examples seen thus far, the &lt;select&gt;s seen here were
+            not created by PickAndChoose; they were already present in the page.
+            The buttons were still created dynamically.  If you go this route, put
+            the &lt;select&gt;s adjacent to each other in their own container, with no
             other content inside. 
-         </h4>
+         </p>
          <div id="widget4">
             <select id="select1" name="select1">
                <option value="choice1">Choice 1</option>
@@ -187,17 +236,40 @@
             </select>
          </div>
 
-         <h2>Failed initialization</h2>
-         <h4>
-            If you attempt to initialize the widget with the same key present in both<br/>
-            &lt;select&gt;s, the widget will not initialize and an exception will be<br/>
-            thrown.  If showErrors is set to true, the exception message is written <br/>
-            to the container (see below).  If you can't be sure of the integrity of<br/>
-            your data, and if you want the rest of your page's JavaScript to continue<br/>
-            in the event of an initialization failure, be sure to wrap the plugin<br/>
-            invocation in a try/catch.
-         </h4>
+         <h2>Styling the selection boxes</h2>
+         <p>
+            PickAndChoose supports two ways of specifying a CSS class for &lt;option&gt;:
+         </p>
+         <ol>
+            <li>
+               <code>settings.optionCssClass</code>, which is applied to every &lt;option&gt;
+               in the widget.  Here, a global style is used to make the text white.  Of course,
+               you could also use CSS to target them directly, rather than  assigning a class.
+               That's how the &lt;select&gt;s got their hover colors.  Use whichever method
+               you prefer.
+               <br/><br/>
+            </li>
+
+            <li>Individual styles:<br/><br/>
+               As of PickAndChoose v1.2, an &lt;option&gt;'s value declaration can be an
+               object.  This allows you to specify additional configuration for an
+               &lt;option&gt;, which you can use to add a CSS class.  Here, individual
+               styles are used to set the background color.
+            </li>
+         </ol>
          <div id="widget5"></div>
+
+         <h2>Failed initialization</h2>
+         <p>
+            If you attempt to initialize the widget with the same key present in both
+            &lt;select&gt;s, the widget will not initialize and an exception will be
+            thrown.  If showErrors is set to true, the exception message is written 
+            to the container (see below).  If you can't be sure of the integrity of
+            your data, and if you want the rest of your page's JavaScript to continue
+            in the event of an initialization failure, be sure to wrap the plugin
+            invocation in a try/catch.
+         </p>
+         <div id="widget6"></div>
       </form>
 
       <h2>Donations</h2>

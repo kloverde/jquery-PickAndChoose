@@ -1,4 +1,4 @@
-PickAndChoose v1.1
+PickAndChoose v1.2
 ==================
 
 See LICENSE for this software's licensing terms.
@@ -76,6 +76,7 @@ See the included HTML file for more in-depth examples.
 | `buttonSelectAllClass` | The CSS class of the select-all &lt;button&gt; | pacButtonSelectAll |
 | `buttonDeselectClass` | The CSS class of the deselect &lt;button&gt; | pacButtonDeselect |
 | `buttonDeselectAllClass` | The CSS class of the deselect-all &lt;button&gt; | pacButtonDeselectAll |
+| `optionCssClass` | A CSS class to apply to all &lt;options&gt;s | null |
 | `buttonSelectText` | The text of the select button | &gt; |
 | `buttonSelectAllText` | The text of the select-all button | &gt;&gt; |
 | `buttonDeselectText` | The text of the deselect button |  &lt; |
@@ -87,6 +88,7 @@ See the included HTML file for more in-depth examples.
 | `selectedName` | The name of the &lt;select&gt; containing the selected items.  If you provide your own &lt;select&gt; elements instead of having them constructed for you, this setting is ignored. | pacSelectedItems |
 | `unselectedItems` | Key/value pairs of items to populate the unselected items' &lt;select&gt; with.  If you provide your own &lt;select&gt; elements instead of having them constructed for you, this setting is ignored. | null |
 | `selectedItems` | Key/value pairs of items to populate the selected items' &lt;select&gt; with.  If you provide your own &lt;select&gt; elements instead of having them constructed for you, this setting is ignored. | null |
+| `unhighlightAfterMove` | Determines whether to unhighlight an item after moving it to the other &lt;select&gt;.  Highlighted items appear as if they've been clicked. | true |
 | `onChangeCallback` | A callback function to execute when the user uses the buttons.  The callback only fires if the user's action resulted in a change. | null |
 | `showErrors` | Determines whether to display initialization errors in the page.  If set to `true`, your users will see them, so you might choose to treat this as a debug option.  Regardless of the setting, the plugin will throw initialization errors as exceptions. | false |
 
