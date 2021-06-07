@@ -102,9 +102,3 @@ If you implement a callback function, it must accept three parameters:
 | `operation` | string | Tells you whether the user selected or deselected items.  Possible values are `select` and `deselect`. |
 | `recipient` | jQuery object | The &lt;select&gt; which received the items that were selected/deselected |
 | `items`     | object array | Contains the data that was written to the recipient &lt;select&gt;.  Access the data using [object].key and [object].value. |
-
-
-
-## Thanks
-
-Do you like this library?  Want to toss a few bucks my way to say thanks?  I accept donations at https://paypal.me/KurtisLoVerde/6.  Thank you for your support!
